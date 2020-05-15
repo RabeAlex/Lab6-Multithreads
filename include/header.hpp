@@ -69,11 +69,11 @@ void init_logging() {
     logging::add_file_log(
             keywords::file_name = "info.log",
             keywords::format =
-                    "[%LineID%][%TimeStamp%][%ThreadID%][%Severity%]%Message%" );
+                    "[%LineID%][%TimeStamp%][%ThreadID%][%Severity%]%Message%");
     logging::add_console_log(
             std::cout,
             keywords::format =
-                    "[%LineID%][%TimeStamp%][%ThreadID%][%Severity%]%Message%" );
+                    "[%LineID%][%TimeStamp%][%ThreadID%][%Severity%]%Message%");
 }
 
 int main() {
