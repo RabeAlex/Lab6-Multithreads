@@ -7,6 +7,7 @@
 #include "picosha2.h"
 #include <thread>
 #include <vector>
+#include <string>
 #include <boost/log/trivial.hpp>
 #include <boost/log/utility/setup/file.hpp>
 #include <boost/log/sources/severity_feature.hpp>
@@ -34,11 +35,11 @@ public:
     }
 
     void setThreads() {
-        for (size_t i = 0; i < threadNumber; i++) {
+        for (size_t i = 0; i < threadNumber; ++i) {
             std::thread th(hashHandler);
             allThreads.push_back(std::move(th));
         }
-        for (size_t i = 0; i < threadNumber; i++) {
+        for (size_t i = 0; i < threadNumber; ++i) {
             allThreads.at(i).join();
         }
     }
@@ -50,26 +51,29 @@ public:
             for (int i = 0; i < stringLength; ++i) {
                 stringForHash.push_back(32+std::rand()%94);
             }
-            const std::string hash = picosha2::hash256_hex_string(stringForHash);
+            const std::string hash =
+            	picosha2::hash256_hex_string(stringForHash);
             if (hash.find("0000", 60) == 60) {
-                BOOST_LOG_TRIVIAL(info) << stringForHash << " - " << hash << std::endl;
+                BOOST_LOG_TRIVIAL(info) << stringForHash
+                	<< " - " << hash << std::endl;
                 break;
             } else {
-                BOOST_LOG_TRIVIAL(trace) << stringForHash << " - " << hash << std::endl;
+                BOOST_LOG_TRIVIAL(trace) << stringForHash
+                	<< " - " << hash << std::endl;
             }
         }
     }
 };
 
 void init_logging() {
-    logging::add_file_log (
+    logging::add_file_log(
             keywords::file_name = "info.log",
-            keywords::format = "[%LineID%] [%TimeStamp%] [%ThreadID%] [%Severity%] %Message%"
-    );
-    logging::add_console_log (
+            keywords::format =
+                    "[%LineID%][%TimeStamp%][%ThreadID%][%Severity%]%Message%" );
+    logging::add_console_log(
             std::cout,
-            keywords::format = "[%LineID%] [%TimeStamp%] [%ThreadID%] [%Severity%] %Message%"
-    );
+            keywords::format =
+                    "[%LineID%][%TimeStamp%][%ThreadID%][%Severity%]%Message%" );
 }
 
 int main() {
@@ -79,3 +83,4 @@ int main() {
 }
 
 #endif // INCLUDE_HEADER_HPP_
+
